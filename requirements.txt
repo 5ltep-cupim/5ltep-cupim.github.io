@@ -1,0 +1,2 @@
+# No runtime dependencies: CUPIM uses only the Python standard library.
+# Tests: pip install pytest

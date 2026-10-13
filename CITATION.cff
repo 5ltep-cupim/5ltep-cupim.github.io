@@ -1,0 +1,51 @@
+cff-version: 1.2.0
+message: "If you use this platform, please cite it as below, together with the SOFTENG 2026 paper that defines the framework."
+title: "CUPIM: entry point of the 5L-TEP platform"
+abstract: >-
+  Entry point of the Five-Layer Trust Engineering Pyramid (5L-TEP, SOFTENG
+  2026) applied to open government data on CKAN portals. It links the
+  repository of each layer for each portal (IBAMA, ANEEL, Recife) and keeps a
+  registry of the schedule of every workflow, checked every day against the
+  workflow files each repository publishes. It reads the other repositories
+  over HTTPS and never writes to them.
+type: software
+authors:
+  - family-names: Pinheiro
+    given-names: Luciano Santos
+    affiliation: "CESAR School, Recife, Brazil"
+    email: lsp3@cesar.school
+repository-code: "https://github.com/5ltep-cupim/5ltep-cupim.github.io"
+url: "https://5ltep-cupim.github.io/"
+license: MIT
+version: 0.1.0
+keywords:
+  - trust engineering
+  - data quality
+  - data governance
+  - open government data
+  - CKAN
+  - FAIR
+references:
+  - type: conference-paper
+    title: "Towards Trust Engineering in Open Data Systems: A Layered Conceptual Framework Integrating Quality Assurance and Governance Perspectives"
+    authors:
+      - family-names: Pinheiro
+        given-names: Luciano Santos
+    collection-title: "SOFTENG 2026"
+    publisher:
+      name: IARIA
+    start: 21
+    end: 28
+    year: 2026
+  - type: thesis
+    thesis-type: "Master's thesis"
+    title: "Engenharia da Confiança (5L-TEP) Aplicada a Dados Abertos do IBAMA: Automação, Inteligência Artificial e Human-in-the-Loop para Avaliação da Qualidade de Big Data através da Plataforma CUPIM"
+    authors:
+      - family-names: Pinheiro
+        given-names: Luciano Santos
+    institution:
+      name: "CESAR School, Programa de Pós-Graduação em Engenharia de Software"
+      city: Recife
+      country: BR
+    year: 2027
+    notes: "In preparation."

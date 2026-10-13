@@ -1,0 +1,96 @@
+/* The same tokens as the Layer 4 and Layer 5 dashboards. The pyramid uses the blue ramp as an
+   ordinal scale (base = lightest, top = darkest). Status: fixed good/warning/critical, always with an
+   icon and a label, never colour alone. */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --text: #0b0b0b; --text-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11, 11, 11, .10);
+  --accent: #2a78d6; --accent-text: #ffffff;
+  --level-0: #86b6ef; --level-1: #5598e7; --level-2: #2a78d6; --level-3: #1c5cab; --level-4: #104281;
+  --ink-0: #0b0b0b; --ink-1: #0b0b0b; --ink-2: #ffffff; --ink-3: #ffffff; --ink-4: #ffffff;
+  --good-text: #006300; --warning-text: #7a5300; --critical-text: #b02a2a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --text: #ffffff; --text-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255, 255, 255, .10);
+    --accent: #3987e5; --accent-text: #0b0b0b;
+    --level-0: #9ec5f4; --level-1: #6da7ec; --level-2: #3987e5; --level-3: #256abf; --level-4: #184f95;
+    --ink-0: #0b0b0b; --ink-1: #0b0b0b; --ink-2: #0b0b0b; --ink-3: #ffffff; --ink-4: #ffffff;
+    --good-text: #0ca30c; --warning-text: #fab219; --critical-text: #ee6b6b;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --text: #ffffff; --text-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255, 255, 255, .10);
+  --accent: #3987e5; --accent-text: #0b0b0b;
+  --level-0: #9ec5f4; --level-1: #6da7ec; --level-2: #3987e5; --level-3: #256abf; --level-4: #184f95;
+  --ink-0: #0b0b0b; --ink-1: #0b0b0b; --ink-2: #0b0b0b; --ink-3: #ffffff; --ink-4: #ffffff;
+  --good-text: #0ca30c; --warning-text: #fab219; --critical-text: #ee6b6b;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header, main, footer, .topbar { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+a { color: var(--accent); }
+[hidden] { display: none !important; }
+.muted { color: var(--text-2); }
+.small { font-size: .82rem; }
+.mono { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .85em; overflow-wrap: anywhere; }
+.topbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 16px; font-size: .9rem; }
+.topbar a { text-decoration: none; font-weight: 600; }
+.topbar a:hover { text-decoration: underline; }
+.lang-switch { margin-left: auto; display: flex; gap: 8px; }
+.lang-switch a.current { color: var(--text); pointer-events: none; }
+header { padding-top: 28px; }
+h1 { margin: 2px 0 4px; font-size: 1.9rem; }
+h2 { font-size: 1.15rem; margin: 0 0 6px; }
+h3 { font-size: .95rem; margin: 0 0 6px; }
+.eyebrow { margin: 0; text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; color: var(--text-2); }
+.intro { max-width: 1200px; margin: 8px auto 0; padding: 0 16px; color: var(--text-2); }
+section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin: 20px 0; }
+.notice { border-left: 4px solid var(--accent); padding: 8px 12px; background: var(--page); color: var(--text-2); font-size: .88rem; }
+footer { padding-bottom: 32px; color: var(--text-2); font-size: .85rem; }
+
+/* pyramid + layer cards */
+.overview { display: grid; grid-template-columns: minmax(0, 420px) 1fr; gap: 24px; align-items: center; }
+.pyramid svg { width: 100%; height: auto; display: block; }
+.pyramid a { cursor: pointer; }
+.pyramid a:focus-visible polygon, .pyramid a:hover polygon { stroke: var(--text); stroke-width: 2; }
+.pyramid text { font-size: 15px; font-weight: 700; pointer-events: none; }
+.layers { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.layers li { border-left: 4px solid var(--axis); padding: 2px 0 2px 12px; }
+.layers li strong { margin-right: 6px; }
+
+/* tables */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+th, td { padding: 7px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { font-size: .78rem; color: var(--text-2); font-weight: 600; white-space: nowrap; }
+td .links { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+td.when { white-space: nowrap; }
+tr.sub td { border-top: 0; padding-top: 0; }
+tbody tr:has(+ tr.sub) td { border-bottom: 0; }
+
+/* status: icon + label, colour never alone */
+.status { font-weight: 600; white-space: nowrap; font-size: .82rem; }
+.status.good { color: var(--good-text); }
+.status.warning { color: var(--warning-text); }
+.status.critical { color: var(--critical-text); }
+.status.neutral { color: var(--text-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+
+ul.plain { padding-left: 18px; margin: 6px 0; }
+ul.plain li { margin: 4px 0; }
+
+@media (max-width: 760px) {
+  .overview { grid-template-columns: 1fr; }
+}
+@media print {
+  .topbar, .lang-switch { display: none !important; }
+  body { background: #fff; color: #000; }
+  section { break-inside: avoid; }
+}

@@ -1,0 +1,246 @@
+{
+  "_comment": "Registry of the CUPIM platform: portals, layers, the repository of each instance and what each scheduled workflow is for. It holds no schedule: the daily reading (cupim.yml) takes the cron of each workflow from the file each repository publishes, so the site always shows the schedule in force. A new portal is a new entry in 'portals' and one repository per layer in 'instances'; moving the repositories to another account changes only 'owner'.",
+  "version": 1,
+  "owner": "lsp3cesarschool",
+  "timezone": {
+    "name": "America/Recife",
+    "utc_offset_hours": -3
+  },
+  "portals": [
+    {
+      "id": "ibama",
+      "name": "IBAMA",
+      "url": "https://dadosabertos.ibama.gov.br",
+      "main": true
+    },
+    {
+      "id": "aneel",
+      "name": "ANEEL",
+      "url": "https://dadosabertos.aneel.gov.br"
+    },
+    {
+      "id": "recife",
+      "name": "Recife",
+      "url": "https://dados.recife.pe.gov.br"
+    }
+  ],
+  "layers": [
+    {
+      "id": "L1",
+      "name": {
+        "en": "Structural contracts",
+        "pt": "Contratos estruturais"
+      },
+      "summary": {
+        "en": "Schema maturity census, data dictionary readers and Table Schema validation.",
+        "pt": "Censo de maturidade dos esquemas, leitores de dicionários de dados e validação com Table Schema."
+      },
+      "instances": {
+        "ibama": "5ltep-layer1",
+        "aneel": "5ltep-layer1-aneel",
+        "recife": "5ltep-layer1-recife"
+      },
+      "pages": true,
+      "workflows": [
+        {
+          "file": "layer1.yml",
+          "reads": [
+            "5ltep-layer1-modeltest"
+          ],
+          "purpose": {
+            "en": "Weekly census and validation",
+            "pt": "Censo e validação semanais"
+          }
+        }
+      ]
+    },
+    {
+      "id": "L2",
+      "name": {
+        "en": "Semantic policies",
+        "pt": "Políticas semânticas"
+      },
+      "summary": {
+        "en": "Domain rules crossing the portal's datasets: signals to review, source integrity, record numbers only.",
+        "pt": "Regras de domínio que cruzam os conjuntos do portal: sinais a conferir, integridade da fonte, só números de registro."
+      },
+      "instances": {
+        "ibama": "5ltep-layer2",
+        "aneel": "5ltep-layer2-aneel",
+        "recife": "5ltep-layer2-recife"
+      },
+      "pages": true,
+      "workflows": [
+        {
+          "file": "layer2.yml",
+          "purpose": {
+            "en": "Weekly evaluation of the rules",
+            "pt": "Avaliação semanal das regras"
+          }
+        }
+      ]
+    },
+    {
+      "id": "L3",
+      "name": {
+        "en": "Anomaly detection",
+        "pt": "Detecção de anomalias"
+      },
+      "summary": {
+        "en": "Statistical anomaly detection, local LLM-as-a-Judge and human-in-the-loop review.",
+        "pt": "Detecção estatística de anomalias, LLM local como juiz e revisão humana (human-in-the-loop)."
+      },
+      "instances": {
+        "ibama": "5ltep-layer3",
+        "aneel": "5ltep-layer3-aneel",
+        "recife": "5ltep-layer3-recife"
+      },
+      "pages": true,
+      "workflows": [
+        {
+          "file": "layer3.yml",
+          "reads": [
+            "5ltep-layer3-modeltest"
+          ],
+          "purpose": {
+            "en": "Monthly detection and judgement",
+            "pt": "Detecção e julgamento mensais"
+          }
+        },
+        {
+          "file": "model-check.yml",
+          "reads": [
+            "5ltep-layer3-modeltest"
+          ],
+          "purpose": {
+            "en": "Monthly check of the recommended model",
+            "pt": "Conferência mensal do modelo recomendado"
+          }
+        }
+      ]
+    },
+    {
+      "id": "L4",
+      "name": {
+        "en": "Observability and provenance",
+        "pt": "Observabilidade e proveniência"
+      },
+      "summary": {
+        "en": "W3C PROV-DM change records of the portal's metadata, dashboard and daily cross-check.",
+        "pt": "Registros de mudança dos metadados do portal em W3C PROV-DM, painel e conferência cruzada diária."
+      },
+      "instances": {
+        "ibama": "5ltep-layer4",
+        "aneel": "5ltep-layer4-aneel",
+        "recife": "5ltep-layer4-recife"
+      },
+      "pages": true,
+      "workflows": [
+        {
+          "file": "monitor.yml",
+          "purpose": {
+            "en": "Monitoring cycle every 6 hours",
+            "pt": "Ciclo de monitoramento a cada 6 horas"
+          }
+        },
+        {
+          "file": "cross_check.yml",
+          "purpose": {
+            "en": "Daily cross-check of the records",
+            "pt": "Conferência cruzada diária dos registros"
+          }
+        },
+        {
+          "file": "compress.yml",
+          "purpose": {
+            "en": "Weekly compression of the history",
+            "pt": "Compactação semanal do histórico"
+          }
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "name": {
+        "en": "Governance and publication",
+        "pt": "Governança e publicação"
+      },
+      "summary": {
+        "en": "Puts the evidence of Layers 1-4 side by side per dataset: coverage, quality score, citable records. It informs; it never decides.",
+        "pt": "Põe lado a lado, por conjunto de dados, a evidência das Camadas 1–4: cobertura, pontuação de qualidade, fichas citáveis. Informa; não decide."
+      },
+      "instances": {
+        "ibama": "5ltep-layer5",
+        "aneel": "5ltep-layer5-aneel",
+        "recife": "5ltep-layer5-recife"
+      },
+      "pages": true,
+      "workflows": [
+        {
+          "file": "layer5.yml",
+          "reads": [
+            "L1",
+            "L2",
+            "L3",
+            "L4"
+          ],
+          "purpose": {
+            "en": "Daily aggregation of the last published summaries",
+            "pt": "Agregação diária dos últimos resumos publicados"
+          }
+        }
+      ]
+    }
+  ],
+  "auxiliary": [
+    {
+      "repository": "5ltep-layer1-modeltest",
+      "layer": "L1",
+      "pages": false,
+      "summary": {
+        "en": "Benchmark of local LLMs that turn PDF data dictionaries into field lists; Layer 1 follows its recommendation.",
+        "pt": "Benchmark de LLMs locais que transformam dicionários de dados em PDF em listas de campos; a Camada 1 segue a recomendação."
+      },
+      "workflows": [
+        {
+          "file": "benchmark.yml",
+          "purpose": {
+            "en": "Monthly benchmark",
+            "pt": "Benchmark mensal"
+          }
+        }
+      ]
+    },
+    {
+      "repository": "5ltep-layer3-modeltest",
+      "layer": "L3",
+      "pages": false,
+      "summary": {
+        "en": "Benchmark of local LLMs for the LLM-as-a-Judge; Layer 3 follows its recommendation.",
+        "pt": "Benchmark de LLMs locais para o LLM como juiz; a Camada 3 segue a recomendação."
+      },
+      "workflows": [
+        {
+          "file": "benchmark.yml",
+          "purpose": {
+            "en": "Monthly benchmark",
+            "pt": "Benchmark mensal"
+          }
+        }
+      ]
+    }
+  ],
+  "platform": {
+    "owner": "5ltep-cupim",
+    "repository": "5ltep-cupim.github.io",
+    "workflows": [
+      {
+        "file": "cupim.yml",
+        "purpose": {
+          "en": "Daily reading of the schedules of every workflow",
+          "pt": "Leitura diária dos horários de cada workflow"
+        }
+      }
+    ]
+  }
+}

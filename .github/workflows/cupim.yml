@@ -1,0 +1,81 @@
+name: CUPIM schedules
+on:
+  schedule:
+    # Daily at 06:40 UTC, after Layer 5 (05:10). It only reads the workflow files of the other
+    # repositories (their schedules); it never waits for, triggers or writes to any of them.
+    - cron: '40 6 * * *'
+  push:
+    branches: [main]
+    paths: ['docs/registry.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cupim
+  cancel-in-progress: false
+
+jobs:
+  read:
+    # Reads the public workflow files of the other repositories: read-only token, hands over an artifact only.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Read the schedule of every listed workflow
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python main.py --out build
+
+      - name: Hand over the outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: cupim
+          path: build/
+          retention-days: 7
+
+  publish:
+    # Writes to the repository, reads nothing external: accepts only the expected files.
+    needs: read
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Receive the outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: cupim
+          path: build
+
+      - name: Accept the outputs (expected paths, valid JSON, bounded sizes)
+        run: python -m src.accept build .
+
+      - name: Commit the schedules
+        run: |
+          git config user.name "5L-TEP CUPIM Bot"
+          git config user.email "5ltep-cupim-bot@users.noreply.github.com"
+          git add docs/data
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: schedules [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
+            git pull --rebase --autostash
+            git push
+          fi

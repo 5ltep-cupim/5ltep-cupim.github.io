@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CUPIM · 5L-TEP</title>
+<meta name="description" content="CUPIM platform: entry point of the Five-Layer Trust Engineering Pyramid (5L-TEP) for open government data.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Every element with data-i18n is filled by app.js (English / Portuguese). -->
+<nav class="topbar">
+  <a id="repo-link" data-i18n="repo" href="https://github.com/5ltep-cupim/5ltep-cupim.github.io">Repository</a>
+  <span class="muted">·</span>
+  <a id="readme-link" href="https://github.com/5ltep-cupim/5ltep-cupim.github.io#readme">README</a>
+  <span class="muted">·</span>
+  <a id="leiame-link" href="https://github.com/5ltep-cupim/5ltep-cupim.github.io/blob/main/LEIAME.md" lang="pt">LEIAME</a>
+  <span class="lang-switch">
+    <a id="lang-en" href="?lang=en">English</a>
+    <span class="muted">·</span>
+    <a id="lang-pt" href="?lang=pt" lang="pt">Português</a>
+  </span>
+</nav>
+
+<header>
+  <p class="eyebrow" data-i18n="eyebrow">5L-TEP · Five-Layer Trust Engineering Pyramid</p>
+  <h1>CUPIM</h1>
+</header>
+<p class="intro" data-i18n="intro"></p>
+
+<main>
+  <div class="notice" id="notice" hidden></div>
+
+  <section id="overview">
+    <h2 data-i18n="overview_h">The pyramid</h2>
+    <div class="overview">
+      <div class="pyramid" id="pyramid"></div>
+      <ul class="layers" id="layer-list"></ul>
+    </div>
+  </section>
+
+  <section id="instances">
+    <h2 data-i18n="instances_h">Layers and portals</h2>
+    <p class="muted" data-i18n="instances_note"></p>
+    <div class="table-wrap"><table id="instances-table"></table></div>
+    <h3 data-i18n="aux_h" style="margin-top:16px">Model benchmarks</h3>
+    <ul class="plain" id="aux-list"></ul>
+  </section>
+
+  <section id="schedules">
+    <h2 data-i18n="schedules_h">Schedules</h2>
+    <p class="muted" data-i18n="schedules_note"></p>
+    <p class="notice" data-i18n="edit_note"></p>
+    <p class="small muted" id="schedule-status"></p>
+    <div class="table-wrap"><table id="schedule-table"></table></div>
+    <div id="unlisted"></div>
+  </section>
+
+  <section id="principles">
+    <h2 data-i18n="principles_h">How this platform works</h2>
+    <ul class="plain" id="principles-list"></ul>
+  </section>
+</main>
+
+<footer>
+  <p data-i18n="footer"></p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
