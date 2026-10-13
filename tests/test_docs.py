@@ -55,6 +55,12 @@ def test_the_site_names_every_gap():
         assert APP.count(f"s_{status}:") == 2, status          # English and Portuguese
 
 
+def test_links_follow_the_language_of_the_page():
+    assert "?lang=${lang}" in APP                              # dashboards
+    assert "/blob/main/LEIAME.md" in APP and "#readme" in APP   # repositories
+    assert "link(repoUrl(" not in APP, "a repository link ignores the language"
+
+
 def test_the_site_links_to_the_editor_and_to_the_runs():
     assert "/edit/main/.github/workflows/" in APP and "/actions/workflows/" in APP
 

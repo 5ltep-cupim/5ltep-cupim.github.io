@@ -124,8 +124,11 @@
     const owner = reg.owner;
     const tzName = (reg.timezone && reg.timezone.name || "UTC").split("/").pop().replace(/_/g, " ");
     const offset = (reg.timezone && reg.timezone.utc_offset_hours) || 0;
+    // Links follow the language of this page: the dashboards take ?lang= (and some remember it, so it is
+    // always passed); a repository opens on its LEIAME (Portuguese) or README (English).
     const repoUrl = (o, r) => `https://github.com/${o}/${r}`;
-    const pagesUrl = (o, r) => (r === `${o}.github.io` ? `https://${r}/` : `https://${o}.github.io/${r}/`);
+    const repoHome = (o, r) => (lang === "pt" ? `${repoUrl(o, r)}/blob/main/LEIAME.md` : `${repoUrl(o, r)}#readme`);
+    const pagesUrl = (o, r) => `${r === `${o}.github.io` ? `https://${r}/` : `https://${o}.github.io/${r}/`}?lang=${lang}`;
     const editUrl = (o, r, f) => `${repoUrl(o, r)}/edit/main/.github/workflows/${f}`;
     const runsUrl = (o, r, f) => `${repoUrl(o, r)}/actions/workflows/${f}`;
     const items = new Map(((data && data.items) || []).map((i) => [`${i.repository}::${i.file}`, i]));
@@ -136,7 +139,7 @@
 
     // texts and links of the frame
     document.querySelectorAll("[data-i18n]").forEach((node) => { const v = T[lang][node.dataset.i18n]; if (typeof v === "string") node.textContent = v; });
-    document.getElementById("repo-link").href = repoUrl(p.owner, p.repository);
+    document.getElementById("repo-link").href = repoHome(p.owner, p.repository);
     document.getElementById("readme-link").href = `${repoUrl(p.owner, p.repository)}#readme`;
     document.getElementById("leiame-link").href = `${repoUrl(p.owner, p.repository)}/blob/main/LEIAME.md`;
     document.getElementById(`lang-${lang}`).classList.add("current");
@@ -161,7 +164,7 @@
       const repo = layer.instances[main.id];
       return el("li", { id: `layer-${layer.id}`, style: `border-left-color: var(--level-${n - 1 - i})` },
         el("strong", {}, `${layer.id} · ${tx(layer.name)}`),
-        link(layer.pages ? pagesUrl(owner, repo) : repoUrl(owner, repo), layer.pages ? t("dashboard") : t("repository")),
+        link(layer.pages ? pagesUrl(owner, repo) : repoHome(owner, repo), layer.pages ? t("dashboard") : t("repository")),
         el("div", { class: "muted small" }, tx(layer.summary)));
     }));
 
@@ -174,12 +177,12 @@
         const repo = layer.instances[pt.id];
         if (!repo) return el("td", { class: "muted" }, "—");
         return el("td", {}, el("div", { class: "links" },
-          link(repoUrl(owner, repo), t("repository")),
+          link(repoHome(owner, repo), t("repository")),
           layer.pages ? link(pagesUrl(owner, repo), t("dashboard")) : el("span", { class: "muted" }, t("no_pages"))));
       }))));
     document.getElementById("instances-table").replaceChildren(head, body);
     document.getElementById("aux-list").replaceChildren(...(reg.auxiliary || []).map((aux) => el("li", {},
-      link(repoUrl(owner, aux.repository), aux.repository), ` (${aux.layer}): `, tx(aux.summary))));
+      link(repoHome(owner, aux.repository), aux.repository), ` (${aux.layer}): `, tx(aux.summary))));
 
     // schedules: the cron in force, read from the published workflow
     const same = (a, b) => JSON.stringify([...(a || [])].sort()) === JSON.stringify([...(b || [])].sort());

@@ -1,6 +1,6 @@
 # CUPIM: entry point of the 5L-TEP platform
 
-[Leia em português](LEIAME.md) · [Site](https://5ltep-cupim.github.io/)
+[Leia em português](LEIAME.md) · [Site](https://5ltep-cupim.github.io/?lang=en)
 
 
 CUPIM is the entry point of the Five-Layer Trust Engineering Pyramid (5L-TEP, SOFTENG 2026) applied
@@ -20,7 +20,7 @@ repository links them all and shows when each workflow runs, with a link to chan
 
 Model benchmarks: [5ltep-layer1-modeltest](https://github.com/lsp3cesarschool/5ltep-layer1-modeltest)
 and [5ltep-layer3-modeltest](https://github.com/lsp3cesarschool/5ltep-layer3-modeltest). The dashboard
-of each repository is linked from the [site](https://5ltep-cupim.github.io/). The aggregated view of the
+of each repository is linked from the [site](https://5ltep-cupim.github.io/?lang=en). The aggregated view of the
 evidence per dataset (quality score, citable records) is Layer 5; CUPIM does not repeat it.
 
 Running the same code on other portals shows reuse; it is not a ranking of the agencies.
